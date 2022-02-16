@@ -1,0 +1,238 @@
+import UIKit
+
+class song{
+    
+    var name = ""
+    var artist = ""
+    var album = ""
+    var length = 0
+    
+    init(_ name:String, _ artist:String, _ album:String, _ length:Int){
+        
+        self.name = name
+        self.artist = artist
+        self.album = album
+        self.length = length
+    }
+}
+
+class Playlist{
+    
+    var songs: [song] = []
+    var size:Int {
+        
+        return songs.count
+
+    }
+    var totaltimeFormatted:String {
+        
+        var i = 0
+        for song in songs {
+            i = i + song.length
+        }
+        var ms = 0, s = 0, m = 0, h = 0
+        ms = i % 1000
+        s = i / 1000
+        m = s / 60
+        s = s % 60
+        h = m / 60
+        m = h % 60
+        return ("\(h):\(m):\(s):\(ms)")
+    }
+    var playlistName = ""
+    
+    init(_ playlistName:String){
+    
+        self.playlistName = playlistName
+    
+    }
+    func addsong(_ newSong:song){
+        if size > 12 {
+            print("Playlist is currently full. Please make another one or try deleting a song")
+        }
+        else {
+            
+            self.songs.append(newSong)
+        }
+            
+    }
+    func getSong(_ index:Int) -> String{
+        if index <= 12 {
+        
+            return ("There are not more than 12 songs")
+            
+        }
+        else {
+            return ("\(self.songs[index-1].name)")
+            
+        
+        }
+    }
+    func removeSong(_ songRemove:String){
+        var k = 0
+        for song in songs {
+            
+            if song.name == songRemove{
+                
+                songs.remove(at: k)
+                
+            }
+            k += 1
+        }
+        
+    }
+    func removeall() {
+        
+        songs.removeAll()
+        
+    }
+    
+        
+    
+}
+
+func printAllSongs(_ list:[song]){
+    var i = 0
+    for songs in list {
+        print(i, separator: ". ", terminator: ".  "+songs.name+"\n")
+        i += 1
+    }
+}
+ 
+var allSongs:[song] = []
+var playlists:[Playlist] = []
+var key = true
+let intro = """
+            press 1 if you want to add a new song to the collecitons
+            press 2 if you want to access playlist
+            """
+let playlistintro = """
+press 1 if you want to create a new playlist
+press 2 if you want to access a playlist
+"""
+while key == true {
+    
+    print(intro)
+    let a  =  readLine(strippingNewline: true)!
+    print(a)
+        
+    if a == "1"{
+        
+        print("give your song name:")
+        let tempName = readLine()
+        print("who made that song?")
+        let tempArtist = readLine()
+        print("which album does it belongs to?")
+        let tempAlbum =  readLine()
+        print("how long is this song?")
+        let tempLength = Int(readLine()!)!
+        let tempSong = song(tempName!, tempArtist!, tempAlbum!, tempLength)
+        allSongs.append(tempSong)
+    }
+        
+    else if a == "2" {
+        
+        print(playlistintro)
+        let b = readLine()
+        
+      
+        if b == "1"{
+                
+                print("what will be the name of your playlist?")
+            let playlistname = readLine()
+            let newplaylist = Playlist(playlistname!)
+                print("Do you want to add songs to playlist?")
+            let choice = readLine()
+            
+                if choice == "Yes"{
+                    
+                    print("choose the songs you want to add")
+                    printAllSongs(allSongs)
+                    let songno = Int(readLine()!)
+                    newplaylist.addsong(allSongs[songno!])
+                    print("song added, playlist created")
+            
+                }
+            
+                else {
+                    print("playlist created")
+                
+                }
+                
+                    playlists.append(newplaylist)
+        }
+                
+        else if b ==  "2" {
+            
+                print("choose the index of the playlist you want to access")
+                print(playlists, separator: "\n", terminator: "\n")
+                var playlistindex = Int(readLine()!)
+                print(" press 1 if you want to add songs\n press 2 if you wanna choose songs\npress 3 if you want to remove a song\n press 4 if you wanna get total time\npress 5 if you want to delete all\npress 6 if you want list of all songs")
+                var newone = readLine()
+                
+                    
+            if newone ==  "1"{
+                
+                        print("choose the songs you want to add")
+                        printAllSongs(allSongs)
+                        var songno = Int(readLine()!)
+                        playlists[playlistindex!].addsong(allSongs[songno!])
+                
+            }
+            
+            else if newone == "2" {
+                
+                        print("choose the song you wanna play? Please enter the index of the song")
+                        printAllSongs(playlists[playlistindex!].songs)
+                let addSongIndex = Int(readLine()!)
+                        print(playlists[playlistindex!].getSong(addSongIndex!))
+                
+            }
+            else if newone == "3" {
+                    print("Enter the name of the song you want to remove")
+                    let songremove = readLine()!
+                    playlists[playlistindex!].removeSong(songremove)
+                
+            }
+            else if newone == "4" {
+                
+                print(playlists[playlistindex!].totaltimeFormatted)
+                
+            }
+            else if newone == "5" {
+                
+                playlists[playlistindex!].removeall()
+                
+            }
+            else if newone == "6" {
+                
+                printAllSongs(playlists[playlistindex!].songs)
+            }
+             
+            else {
+                        print("sorry! there's no such option")
+                        key = false
+                    
+                }
+        }
+                
+        else {
+                
+                print("sorry! there's no such option")
+                key = false
+                
+            
+        }
+    }
+        
+    else {
+        
+        print("sorry! there's no such option")
+        key = false
+    }
+}
+        
+    
+    
+    
+
