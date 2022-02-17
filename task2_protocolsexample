@@ -1,0 +1,66 @@
+import UIKit
+import Foundation
+
+//protocol example
+
+protocol sum {
+    func add()
+}
+
+protocol product {
+    
+    func multiply()
+}
+
+protocol difference {
+    
+    func subtract()
+}
+
+protocol quotient {
+    
+    func divide()
+}
+
+protocol remainder {
+    
+    func modulodivision()
+    
+}
+
+
+class calculator: sum,product,difference,remainder,quotient {
+    
+    var num1 = 0
+    var num2 = 0
+    
+    func add() {
+        print("sum: ",num1+num2)
+    }
+    
+    func multiply() {
+        print("product: ", num1*num2)
+    }
+    
+    func subtract() {
+        print("difference: ", num1 - num2)
+    }
+    
+    func modulodivision() {
+        print("remainder: ",num1 % num2)
+    }
+    
+    func divide() {
+        print("quotient: ", num1 / num2)
+    }
+}
+
+var calci = calculator()
+calci.num1 = 10
+calci.num2 = 3
+
+calci.add()
+calci.subtract()
+calci.multiply()
+calci.divide()
+calci.modulodivision()
